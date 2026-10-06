@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gift Exchange: k Secret k Santa</title>
+<meta name="description" content="A k-fold gift exchange: assign everyone k gift recipients (and k gift givers) with a direct, retry-free algorithm. Public, one-time-pad, and double-blind ElGamal modes.">
+<link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="assets/css/giftexchange.css">
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [["$", "$"], ["\\(", "\\)"]], displayMath: [["$$", "$$"], ["\\[", "\\]"]] },
+    svg: { fontCache: "global" },
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div>
+      <h1>Gift Exchange: k Secret k Santa</h1>
+      <p class="sub">Assign everyone $k$ gift recipients and $k$ gift givers &mdash; retry-free.</p>
+    </div>
+    <button class="theme-toggle" id="theme-toggle" type="button">Light / dark</button>
+  </header>
+
+  <div class="intro">
+    <p>
+      In a classic Secret Santa, each person gives and receives one gift. This tool
+      generalizes that concept to a <em>$k$-fold gift exchange</em>, where every person
+      is randomly assigned $k$ distinct gift recipients in such a way that everyone ends
+      up receiving $k$ gifts. It has three modes: <q>Public Mode</q> where the
+      assignments are plainly visible, <q>Secret Mode (Trusted Organizer)</q> where the
+      assignments are encrypted with keys the organizer hands out, and
+      <q>Secret Mode (Double Blind)</q> where each participant holds their own private
+      key and even the organizer cannot read anyone's row. Below is an explanation of
+      the graph theory, algorithm, and cryptography involved.
+    </p>
+  </div>
+
+  <!-- ============================= Generator ============================= -->
+  <div class="ge-app">
+    <div class="ge-panel">
+      <div class="ge-mode-bar">
+        <label for="ge-mode"><strong>Mode</strong></label>
+        <select id="ge-mode">
+          <option value="public" selected>Public Mode</option>
+          <option value="secret">Secret Mode (Trusted Organizer)</option>
+          <option value="secure">Secret Mode (Double Blind)</option>
+        </select>
+      </div>
+
+      <div id="ge-secure-link" class="ge-hint" style="display: none;">
+        <p>Step 1: Have each user generate keys using the
+          <a id="ge-keygen-link" href="keygen/">Key Generator</a>,
+          and collect their public keys.</p>
+        <p>Step 2: Enter the participants' public keys one at a time or as a semicolon-separated list.  If a participant did not give you a public key, you can just enter their name.</p>
+        <p>Step 3: Select the number $k$ and press <strong>Generate</strong>.</p>
+        <p>Step 4: Share the link with everyone.  This contains the encrypted gift assignments.</p>
+      </div>
+
+      <div class="ge-add-bar">
+        <input id="ge-add-input" type="text" class="ge-name-input" autocomplete="off"
+               placeholder="Name, or semicolon-separated names" aria-label="Participant name(s)" />
+        <button type="button" id="ge-add" class="ge-btn">Add Participant</button>
+      </div>
+      <p class="ge-hint">
+        Type one name and press <strong>Add Participant</strong>, or add a whole group at once by
+        separating names with semicolons (e.g. <code class="inline">Alice; Bob; Carlos</code>).
+      </p>
+
+      <div id="ge-name-list"></div>
+
+      <div class="ge-controls">
+        <label for="ge-k" id="ge-k-label">k</label>
+        <input type="range" id="ge-k" min="1" max="1" step="1" value="1" />
+        <button type="button" id="ge-generate" class="ge-btn ge-btn-primary">Generate</button>
+      </div>
+
+      <p id="ge-error" class="ge-error" role="alert"></p>
+
+      <div id="ge-results-wrap" style="display: none;">
+        <div id="ge-secret-out" style="display: none;">
+          <span id="ge-copy-status" class="ge-status"></span>
+          <div class="ge-block" id="ge-message-block">
+            <div class="ge-block-head">
+              <h4>Public Message</h4>
+              <button type="button" id="ge-copy-message" class="ge-btn ge-btn-small">Copy</button>
+            </div>
+            <p class="ge-hint">Share this with everyone (group chat, email). It contains the encrypted gift assignments.</p>
+            <textarea id="ge-message" class="ge-code" rows="5" readonly></textarea>
+          </div>
+          <div class="ge-block" id="ge-link-block" style="display: none;">
+            <div class="ge-block-head">
+              <h4>Share Link</h4>
+              <button type="button" id="ge-copy-public-link" class="ge-btn ge-btn-small">Copy Link</button>
+            </div>
+            <p class="ge-hint">Share this link with everyone: it opens the decrypt page with the public message already filled in.</p>
+            <p><a id="ge-public-link" target="_blank" rel="noopener">Open the decrypt page with the message filled in</a></p>
+          </div>
+          <div class="ge-block" id="ge-organizer-keys-block" style="display: none;">
+            <div class="ge-block-head"><h4>Keys You Generated</h4></div>
+            <p class="ge-hint">These participants didn't use the key generator, so you must send them their private keys.</p>
+            <div id="ge-organizer-keys"></div>
+          </div>
+          <div class="ge-block" id="ge-keys-block">
+            <div class="ge-block-head"><h4>Private Keys</h4></div>
+            <p class="ge-hint">Send each person their own key <em>privately</em>. The organizer holds these keys too.</p>
+            <div id="ge-keys"></div>
+          </div>
+        </div>
+        <div id="ge-public-out"></div>
+        <textarea id="ge-copy-fallback" rows="6" style="display: none;" readonly></textarea>
+      </div>
+    </div>
+  </div>
+
+  <p class="ge-toplink"><a id="ge-decrypt-link" href="decrypt/">Got a message and a key? Go to the decrypt page &rarr;</a></p>
+
+  <!-- ============================ Exposition ============================ -->
+  <details>
+    <summary>The Graph Theory</summary>
+
+    <p>
+      In a typical gift exchange, each giver is assigned a receiver, and no one person
+      receives from two people.  This can be represented by a directed graph.  Here are
+      two examples.
+    </p>
+    <table class="ge-diagrams">
+      <tr>
+        <td>
+          <img src="assets/img/gift_exchange/one_component_light.svg" class="only-light" alt="One connected component: a directed 6-cycle on six people — Alice gives to Frank, Frank to Eve, Eve to David, David to Carlos, Carlos to Bob, and Bob to Alice" />
+          <img src="assets/img/gift_exchange/one_component_dark.svg" class="only-dark" alt="One connected component: a directed 6-cycle on six people — Alice gives to Frank, Frank to Eve, Eve to David, David to Carlos, Carlos to Bob, and Bob to Alice" />
+        </td>
+        <td>
+          <img src="assets/img/gift_exchange/two_components_light.svg" class="only-light" alt="Two disjoint components: a 4-cycle Alice gives to Bob, Bob to Carlos, Carlos to Eve, Eve to Alice; and a 2-cycle David gives to Frank and Frank to David" />
+          <img src="assets/img/gift_exchange/two_components_dark.svg" class="only-dark" alt="Two disjoint components: a 4-cycle Alice gives to Bob, Bob to Carlos, Carlos to Eve, Eve to Alice; and a 2-cycle David gives to Frank and Frank to David" />
+        </td>
+      </tr>
+    </table>
+
+    <p>
+      In the first case, we have a <em>connected</em> graph, and in the latter we have a
+      <em>disconnected</em> graph.  Both situations can occur when drawing names from a
+      hat, so for now we allow connected and disconnected gift assignments.  Directed
+      graphs can equivalently be described in terms of their <em>adjacency matrix</em>.
+      With our people ordered Alice, Bob, Carlos, David, Eve, Frank (rows are givers,
+      columns are receivers), the two graphs above respectively have adjacency matrices
+    </p>
+
+    $$
+    \begin{pmatrix}
+    0 & 0 & 0 & 1 & 0 & 0 \\
+    1 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 1 \\
+    0 & 0 & 0 & 0 & 1 & 0 \\
+    0 & 0 & 1 & 0 & 0 & 0 \\
+    0 & 1 & 0 & 0 & 0 & 0
+    \end{pmatrix}
+    \qquad\qquad\qquad\qquad
+    \begin{pmatrix}
+    0 & 1 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 1 \\
+    0 & 0 & 0 & 1 & 0 & 0 \\
+    0 & 0 & 1 & 0 & 0 & 0 \\
+    1 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 1 & 0
+    \end{pmatrix}
+    $$
+
+    <p>Having a 1 in the $(i,j)$-entry means the $i$th person gives a gift to the $j$th person.</p>
+
+    <p>
+      Now let's explore the $k=2$ case, i.e. where every person gives and receives two
+      gifts.  If we simply draw from hats with each name doubled, someone could end up
+      giving two gifts to the same person.  As we increase $k$, this becomes more and
+      more likely to occur.
+    </p>
+
+    <p>
+      Let $v_1,\dots,v_n$ be the vertices, and let $\mathrm{deg}_\mathrm{in}(v_i)$ and
+      $\mathrm{deg}_\mathrm{out}(v_i)$ be the number of arrows pointing into $v_i$ and out
+      of $v_i$, respectively.  We want an algorithm which generates a directed graph
+      satisfying the following properties:
+    </p>
+
+    <ul>
+      <li>$\mathrm{deg}_\mathrm{out}(v_i)=k$ for each $i$ (everyone gives $k$ gifts);</li>
+      <li>$\mathrm{deg}_\mathrm{in}(v_i)=k$ (everyone receives $k$ gifts);</li>
+      <li>No doubled arrows or self-loops (nobody gives multiple gifts to one person, nobody gives a gift to themselves).</li>
+    </ul>
+
+    <p>In terms of adjacency matrices, these are:</p>
+
+    <ul>
+      <li>Each row sums to $k$;</li>
+      <li>Each column sums to $k$;</li>
+      <li>Each entry is either 0 or 1, and the diagonal only contains 0's.</li>
+    </ul>
+
+    <p>Here is a $k=3$ example:</p>
+
+    <table class="ge-diagrams">
+      <tr>
+        <td>
+          <img src="assets/img/gift_exchange/three_fold_light.svg" class="only-light" alt="A 3-fold gift exchange on six people arranged in a hexagon. Alice gives to Bob, Carlos, and David; Bob gives to Alice, Carlos, and Frank; Carlos gives to David, Eve, and Frank; David gives to Alice, Eve, and Frank; Eve gives to Alice, Bob, and Carlos; Frank gives to Bob, David, and Eve." />
+          <img src="assets/img/gift_exchange/three_fold_dark.svg" class="only-dark" alt="A 3-fold gift exchange on six people arranged in a hexagon. Alice gives to Bob, Carlos, and David; Bob gives to Alice, Carlos, and Frank; Carlos gives to David, Eve, and Frank; David gives to Alice, Eve, and Frank; Eve gives to Alice, Bob, and Carlos; Frank gives to Bob, David, and Eve." />
+        </td>
+        <td>
+          $$
+          \begin{pmatrix}
+          0 & 1 & 1 & 1 & 0 & 0 \\
+          1 & 0 & 1 & 0 & 0 & 1 \\
+          0 & 0 & 0 & 1 & 1 & 1 \\
+          1 & 0 & 0 & 0 & 1 & 1 \\
+          1 & 1 & 1 & 0 & 0 & 0 \\
+          0 & 1 & 0 & 1 & 1 & 0
+          \end{pmatrix}
+          $$
+        </td>
+      </tr>
+    </table>
+  </details>
+
+  <details>
+    <summary>The Algorithm</summary>
+
+    <p>
+      The algorithm begins with a <em>greedy algorithm</em> which simply operates one row
+      at a time.  Sometimes the greedy algorithm reaches an impasse where no more edges
+      can be added without breaking a rule and someone still doesn't have $k$ recipients.
+      In that case, the <code class="inline">repair()</code> function is called to get
+      unstuck.  Below is pseudocode for the algorithm:
+    </p>
+
+<pre class="ge-code"><code>function generate(n, k):
+    received = {each person: 0}           # how many gifts they've received so far
+    given = {each person: 0}              # how many gifts they've given so far
+    edges = []
+
+    for each giver g (in random order):
+        while given[g] &lt; k:               # g still needs to give k - given[g] more
+                                          # gifts; once given[g] == k, g is done
+            options = people not equal to g who still have room (received &lt; k)
+
+            if options is non-empty:
+                pick a random recipient r from options
+                add edge g -&gt; r
+                remove r from options
+                given[g] += 1             # g has now given one more gift
+                received[r] += 1          # r has now received one more gift
+            else:
+                repair(g)                 # see below
+
+    return edges
+
+function repair(stuckGiver s):
+    # s is stuck: there are no more available recipients. Create a chain of edge
+    # donations until one of the recipient slots are freed up.</code></pre>
+
+    <p>
+      Here is a generator that runs through the above algorithm one step at a time.
+      Set the number $n$ of participants and the number $k$ of gift assignments per
+      participant, and then press <strong>Shuffle</strong> to start and
+      <strong>Next step</strong> to begin generating entries.  See if you can trigger
+      the repair phase (it happens more commonly for larger $n$ and $k$).
+    </p>
+
+    <div class="ge-app">
+      <div class="ge-panel" id="ge-viz">
+        <p>
+          Press <strong>Shuffle</strong> to randomly permute the rows. Then the current
+          giver's legal cells are highlighted green: click a green cell to place a 1 (the
+          highlights refresh for your next pick), or press <strong>Next step</strong> for
+          a random legal pick. If the greedy algorithm stalls, the repair procedure gets
+          activated.
+        </p>
+        <div class="ge-viz-controls">
+          <label for="ge-viz-n">n=</label>
+          <select id="ge-viz-n" class="ge-btn">
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6" selected>6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+          <label for="ge-viz-k">k=</label>
+          <select id="ge-viz-k" class="ge-btn">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+          </select>
+          <button type="button" id="ge-viz-shuffle" class="ge-btn ge-btn-primary">Shuffle</button>
+          <button type="button" id="ge-viz-next" class="ge-btn" hidden>Next step</button>
+          <button type="button" id="ge-viz-reset" class="ge-btn ge-viz-reset">Reset</button>
+        </div>
+        <p id="ge-viz-status" class="ge-status"></p>
+        <div id="ge-viz-matrix"></div>
+        <div class="ge-viz-legend">
+          <span><span class="swatch sw-allowed"></span>Allowed</span>
+          <span><span class="swatch sw-banned"></span>Disallowed</span>
+          <span><span class="swatch sw-donor"></span>Repair donor</span>
+          <span><span class="swatch sw-target"></span>Repair donee</span>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary>The Cryptography</summary>
+
+    <p>
+      In the two secret modes, the output is encrypted and each participant gets a key
+      which decrypts just their assignments and no one else's.  In the <strong>Trusted
+      Organizer</strong> mode, the organizer has access to everyone's keys and
+      theoretically could peek at the results.  On the other hand, the <strong>Double
+      Blind</strong> mode uses ElGamal public-key encryption.  This means each participant
+      generates public and private keys, and the organizer only ever has access to the
+      public keys which the generator uses to encrypt the message.  A participant's
+      assignments <em>can only be viewed using their private key</em>, and the organizer
+      never has access to the results.
+    </p>
+
+    <h3>Trusted Organizer Mode</h3>
+
+    <p>
+      Call the participants $P_0,\dots,P_{n-1}$.  The generated gift assignments are
+      initially encoded as an $n\times n$ adjacency matrix consisting of 0's and 1's.  The
+      assignments for the $i$th participant is a single row, which can be regarded as an
+      $n$-bit binary number called their <em>message</em>.  The tool then encrypts these
+      messages and publishes a small JSON object holding the participant roster and one
+      ciphertext per participant.
+    </p>
+
+    <p>
+      To actually encrypt the messages $X_i$, we use an additive one-time pad.  Let
+      $d=2^n+1$.  The tool picks a random offset $b_i\in\mathbb{Z}_d$ and publishes
+      $c_i=(X+b_i)\bmod d$ to the public message.  The <em>key</em> $b_i$ is passed to the
+      user, and the decryption page decrypts the $i$th row $c_i$ of the public message by
+      calculating $X=c_i-b_i\bmod d$.
+    </p>
+
+    <p>
+      <strong>Example.</strong> Let $n=5$, so that $d=2^5+1=33$.  If Alice is participant
+      $P_0$ and is assigned recipients $P_1$ and $P_4$, then her row in the adjacency
+      matrix is $X=10010$ in base 2, or $X=18$ in base 10.  Suppose Alice gets assigned
+      the offset $b_0=27$.  Then the $0$th row of the public message is the ciphertext
+      $c_0=18+27\equiv 12\bmod 33$.  She recovers $X=12-27\equiv 18\bmod 33$ and converts
+      back to binary to recover her recipient list.
+    </p>
+
+    <p>
+      <strong>Key format and length.</strong>  The <q>key</q> sent to the participant
+      actually encodes more data than just the offset $b_i$, and it's all in base 36 using
+      alphanumeric characters.  In the above example, the tool actually sends Alice the
+      key <code class="inline">a0ryq</code>.  The leading 'a' marks the additive encryption
+      method, which distinguishes it from the ElGamal keys discussed below.  The '0'
+      indicates Alice's row number.  Alice's secret offset was $b_0=27$, which is
+      represented by the 'r' in base 36.  The <code class="inline">yq</code> is a
+      two-character checksum that catches typos.  For a party of 10, the row number and
+      offset each contain two digits, so the whole key uses $1+2+2+2=7$ characters.  In
+      general, the offset requires $\lceil\log_{36}(2^n)\rceil$ characters.
+    </p>
+
+    <p>
+      <strong>Possible improvement.</strong>  Since we know each row has exactly $k$ ones,
+      there are only $\binom{n}{k}$ possible rows.  Thus, our choice $d=2^n+1$ leaves more
+      room than necessary to cover all the cases, especially when $k$ is close to 1 or $n$.
+      Encoding each row of the adjacency matrix by its <em>combinadic rank</em> in the list
+      $\left\{0,\dots,\binom{n}{k}-1\right\}$ would shrink the modulus to
+      $\binom{n}{k}+1$.  Because our primary goal is educational and $n$ and $k$ never grow
+      that large anyway, we opted for simplicity over efficiency.
+    </p>
+
+    <h3>Double Blind Mode (public-key)</h3>
+
+    <p>
+      The default scheme assumes the organizer does not use the keys to peek at the
+      assignments (or else does not participate).  The <strong>Secret Mode (Double
+      Blind)</strong> uses ElGamal public-key encryption to avoid this vulnerability.  Fix
+      once and for all a safe prime $p=2q+1$ (with $q$ prime) and a generator $g$ of
+      $(\mathbb Z/p)^\times$.  These two numbers are hardcoded constants (they need not be
+      secret).  Each participant uses the <a href="keygen/">Key Generator</a> to generate a
+      keypair consisting of a private exponent $x\in\{1,\dots,q-1\}$, and the public value
+      $y=g^x\bmod p$.  They keep $x$ to themselves, and send $y$ to the organizer.  The
+      organizer enters everyone's public keys and generates the gift assignments, which are
+      automatically encrypted using the procedure outlined below.
+    </p>
+
+    <p>
+      The $i$th row of the adjacency matrix corresponds to the participant $P_i$; let's
+      say their private and public keys are $x_i$ and $y_i$, respectively.  The entries in
+      the row are encrypted individually to keep the modulus small.  For each entry in the
+      row, a random exponent $r$ is selected along with a uniform 64-bit string $r'$.
+      Then the true message $m$ (which is either 0 or 1) is first converted to
+      $\tilde m=(x+1)\cdot 2^{64}+r'$.  This step on its own is easily reversed by simply
+      dropping the last 64 bits and subtracting 1, but it helps against brute-force
+      attacks by making the resulting message uniformly random from an attacker's
+      perspective.  The actual ciphertext is the pair
+    </p>
+
+    $$(c_1,c_2)=\bigl(g^r,\ \tilde m\cdot y^r\bigr),$$
+
+    <p>
+      which is packaged into the public message.  Using this data and the private key $x$,
+      the <a href="decrypt/">Decryption Page</a> uses the Euclidean algorithm to invert
+      $c_1^x\bmod p$ and then calculates $c_2\,(c_1^x)^{-1}\bmod p$.  Since
+      $c_1^x=(g^r)^x=(g^x)^r=y^r$, the product $c_2\,(c_1^x)^{-1}$ returns $\tilde m$
+      modulo $p$.
+    </p>
+
+    <p class="ge-disclaimer">
+      Disclaimer: this is primarily an educational demonstration, not professional grade
+      cryptography.  The ElGamal encryption scheme does not authenticate who a public key
+      belongs to, the organizer's browser internally stores the gift assignments before
+      encrypting, and the primes are chosen for readable sizes rather than real-world
+      hardness.
+    </p>
+  </details>
+
+  <footer>
+    Standalone packaging of the $k$-fold gift exchange tool from
+    <a href="https://aryayae.com/">aryayae.com</a>. See the repository README for the
+    algorithm and test harness.
+  </footer>
+</div>
+
+<script type="module" src="assets/js/giftexchange/app.js"></script>
+<script type="module" src="assets/js/giftexchange/viz.js"></script>
+<script src="assets/js/theme.js"></script>
+</body>
+</html>

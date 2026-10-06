@@ -1,0 +1,267 @@
+/* Gift Exchange: k Secret k Santa — widget styles (light/dark aware via
+   html[data-theme], matching the site's al-folio theme toggling). */
+
+.ge-app,
+details {
+  --ge-border: #cfd4da;
+  --ge-panel-bg: rgba(127, 127, 127, 0.06);
+  --ge-text: inherit;
+  --ge-accent: #0f8a3a;
+  --ge-amber: #b8860b;
+}
+html[data-theme="dark"] .ge-app,
+html[data-theme="dark"] details {
+  --ge-border: #4a525e;
+  --ge-panel-bg: rgba(255, 255, 255, 0.06);
+  --ge-accent: #3fd07a;
+  --ge-amber: #e6b800;
+}
+
+/* Collapsible "{% details %}" sections on the project page. The tag emits a
+   bare <details><summary>, so render the summary as a large full-width
+   button: bold, bordered, with a rotating chevron. */
+details { margin: 16px 0; }
+details > summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  list-style: none;
+  cursor: pointer;
+  font-size: 1.3em;
+  font-weight: 700;
+  line-height: 1.3;
+  padding: 12px 16px;
+  border: 1px solid var(--ge-border);
+  border-radius: 10px;
+  background: var(--ge-panel-bg);
+  user-select: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before {
+  content: "\25B8"; /* ▸ */
+  display: inline-block;
+  font-size: 0.85em;
+  transition: transform 0.2s ease;
+}
+details[open] > summary::before { transform: rotate(90deg); }
+/* Breathing room between the open button and its body text. */
+details[open] > summary { margin-bottom: 16px; }
+details > summary:hover,
+details > summary:focus-visible { border-color: var(--ge-accent); }
+details > summary:focus-visible { outline: 2px solid var(--ge-accent); outline-offset: 2px; }
+
+.ge-panel {
+  border: 1px solid var(--ge-border);
+  border-radius: 10px;
+  background: var(--ge-panel-bg);
+  padding: 12px;
+  margin-top: 12px;
+}
+
+/* Mode select lives at the very top: it decides how participants are entered. */
+.ge-mode-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+
+/* Single add box + semicolon hint */
+.ge-add-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
+.ge-add-bar .ge-name-input { flex: 1 1 260px; }
+
+/* Participant list: display text with Edit / Delete; editing reveals the
+   name input. In double-blind mode the public key is shown as plain text and
+   a "Generate Keys" button appears until a key exists. */
+#ge-name-list:empty::before {
+  content: "No participants yet.";
+  opacity: 0.6;
+  display: block;
+  padding: 4px 0;
+}
+.ge-name-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 6px; }
+.ge-name-text { flex: 1 1 160px; font-weight: 600; }
+.ge-name-row .ge-name-input { flex: 1 1 160px; display: none; }
+.ge-name-row.ge-editing .ge-name-input { display: inline-block; }
+.ge-name-row.ge-editing .ge-name-text { display: none; }
+.ge-name-row.ge-invalid .ge-name-text { color: #d9534f; }
+.ge-name-input.ge-invalid { outline: 2px solid #d9534f; }
+.ge-name-row .ge-pub-text { display: none; flex: 1 1 220px; min-width: 160px; word-break: break-all; }
+.ge-name-row.ge-secure .ge-pub-text {
+  display: inline-block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.82em;
+}
+.ge-pub-text.ge-pub-missing { font-family: inherit; font-size: 0.9em; opacity: 0.7; }
+.ge-pub-text.ge-pub-generated { color: var(--ge-amber); }
+.ge-pub-text.ge-invalid { color: #d9534f; outline: 2px solid #d9534f; }
+.ge-name-row .ge-genkeys { display: none; }
+.ge-name-row.ge-secure .ge-genkeys { display: inline-block; }
+.ge-name-row.ge-has-key .ge-genkeys { display: none; }
+
+/* Footnote-size disclaimer at the end of the cryptography section */
+.ge-disclaimer { font-size: 0.8em; opacity: 0.8; }
+
+.ge-btn {
+  border: 1px solid var(--ge-border);
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  padding: 6px 12px;
+  cursor: pointer;
+  font: inherit;
+}
+.ge-btn:hover { border-color: var(--ge-accent); }
+.ge-btn-primary { border-width: 2px; font-weight: 600; }
+.ge-btn-small { padding: 2px 9px; line-height: 1.2; }
+.ge-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.ge-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+.ge-controls input[type="range"] { flex: 1 1 160px; min-width: 120px; }
+.ge-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.ge-error { color: #d9534f; min-height: 1.2em; margin: 8px 0 0; }
+.ge-status { font-size: 0.9em; opacity: 0.8; }
+
+#ge-copy-fallback { width: 100%; box-sizing: border-box; margin-bottom: 8px; }
+
+/* Secret-mode message + key blocks */
+.ge-block { margin: 12px 0; }
+.ge-block-head { display: flex; align-items: center; gap: 10px; }
+.ge-block-head h4 { margin: 0; }
+.ge-hint { font-size: 0.88em; opacity: 0.8; margin: 4px 0 6px; }
+.ge-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85em;
+  width: 100%;
+  box-sizing: border-box;
+  resize: vertical;
+  word-break: break-all;
+}
+.ge-code-line { display: flex; align-items: center; gap: 8px; margin: 4px 0; }
+.ge-code-line .ge-code { width: auto; flex: 1 1 auto; overflow-wrap: anywhere; }
+
+/* Per-person key list */
+.ge-key-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border-top: 1px solid var(--ge-border);
+}
+.ge-key-row:first-child { border-top: none; }
+.ge-key-name { font-weight: 600; min-width: 120px; }
+.ge-key-token {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85em;
+  flex: 1 1 220px;
+  word-break: break-all;
+}
+
+/* Top-of-page link to the standalone decrypt page */
+.ge-toplink {
+  display: inline-block;
+  margin: 4px 0 10px;
+  padding: 6px 12px;
+  border: 1px solid #cfd4da;
+  border-radius: 8px;
+  font-weight: 600;
+}
+.ge-toplink a { text-decoration: none; }
+html[data-theme="dark"] .ge-toplink { border-color: #4a525e; }
+
+/* Participant reveal panel */
+#ge-reveal-app label { display: block; margin-top: 8px; font-weight: 600; }
+#ge-reveal-message { min-height: 4.5em; margin-top: 4px; }
+#ge-reveal-key { margin-top: 4px; }
+#ge-reveal-go { margin-top: 10px; }
+#ge-reveal-out { margin-top: 10px; }
+.ge-reveal-result { font-size: 1.05em; }
+.ge-reveal-result strong { color: var(--ge-accent); }
+
+/* Diagram table */
+.ge-diagrams { margin: 0 auto; border-spacing: 0; width: auto; }
+table.ge-diagrams td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 12px;
+  /* the theme's global `table:not(.table) td` rule draws a divider above each
+     cell; suppress it here — these cells hold the SVG diagrams only. */
+  border-top: none;
+}
+.ge-diagrams img { display: inline-block; }
+
+/* Public-mode table */
+.ge-table { border-collapse: collapse; margin-top: 6px; width: 100%; max-width: 640px; }
+.ge-table th, .ge-table td { border: 1px solid var(--ge-border); padding: 6px 10px; text-align: left; }
+.ge-table th { font-weight: 600; }
+
+/* Adjacency-matrix algorithm walkthrough. Sizing is scoped under
+   #ge-viz-matrix so it beats the site's global `table:not(.table)`
+   rules; the table therefore renders at its final size on first paint
+   and does not resize when the JS rebuilds it. */
+#ge-viz-matrix { position: relative; }
+#ge-viz-status { margin-top: 12px; }
+#ge-viz-matrix .ge-mtx {
+  width: auto;
+  border-collapse: collapse;
+  margin: 8px auto;
+  table-layout: fixed;
+}
+#ge-viz-matrix .ge-mtx th, #ge-viz-matrix .ge-mtx td {
+  border: 1px solid var(--ge-border);
+  width: 72px; height: 34px;
+  min-width: 72px;
+  max-width: 72px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  padding: 0 4px;
+  box-sizing: border-box;
+  overflow: hidden;
+  white-space: nowrap;
+}
+#ge-viz-matrix .ge-mtx th { font-weight: 600; }
+#ge-viz-matrix .ge-mtx .ge-mtx-corner,
+#ge-viz-matrix .ge-mtx .ge-mtx-row { width: 96px; min-width: 96px; max-width: 96px; }
+#ge-viz-matrix .ge-mtx .ge-mtx-corner { white-space: normal; font-size: 0.78em; line-height: 1.15; }
+.ge-mtx-row.ge-mtx-active { background: var(--ge-accent); color: #fff; }
+.ge-mtx td { background: transparent; color: inherit; transition: background 0.25s ease, box-shadow 0.25s ease; }
+.ge-mtx .ge-mtx-allowed { background: rgba(15, 138, 58, 0.35); box-shadow: inset 0 0 0 2px var(--ge-accent); }
+html[data-theme="dark"] .ge-mtx .ge-mtx-allowed { background: rgba(63, 208, 122, 0.25); }
+.ge-mtx .ge-mtx-banned { background: rgba(217, 83, 79, 0.35); color: inherit; }
+html[data-theme="dark"] .ge-mtx .ge-mtx-banned { background: rgba(217, 83, 79, 0.28); }
+.ge-mtx .ge-mtx-donor { background: rgba(230, 162, 27, 0.45); box-shadow: inset 0 0 0 2px #e6a21b; }
+.ge-mtx .ge-mtx-target { background: rgba(23, 162, 184, 0.35); box-shadow: inset 0 0 0 2px #17a2b8; }
+.ge-mtx .ge-mtx-resolved { background: rgba(15, 138, 58, 0.5); box-shadow: inset 0 0 0 2px var(--ge-accent); }
+html[data-theme="dark"] .ge-mtx .ge-mtx-resolved { background: rgba(63, 208, 122, 0.35); }
+#ge-viz-matrix { position: relative; }
+.ge-mtx-arrow { position: absolute; top: 0; left: 0; pointer-events: none; overflow: visible; }
+.ge-mtx-arrow line, .ge-mtx-arrow polygon { stroke: #e6a21b; stroke-width: 3; fill: #e6a21b; animation: ge-arrow-in 0.25s ease; }
+@keyframes ge-arrow-in { from { opacity: 0; } to { opacity: 1; } }
+.ge-viz-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.ge-viz-controls select {
+  background: #f2f3f5;
+  color: inherit;
+  border-radius: 8px;
+}
+html[data-theme="dark"] .ge-viz-controls select {
+  background: #3a3f47;
+  color: #fff;
+}
+.ge-viz-reset { margin-left: auto; }
+.ge-viz-legend { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-top: 8px; font-size: 0.85em; }
+.ge-viz-legend .swatch { display: inline-block; width: 14px; height: 14px; border: 1px solid var(--ge-border); vertical-align: -2px; margin-right: 4px; }
+.ge-viz-legend .sw-allowed { background: rgba(15, 138, 58, 0.35); box-shadow: inset 0 0 0 2px var(--ge-accent); }
+html[data-theme="dark"] .ge-viz-legend .sw-allowed { background: rgba(63, 208, 122, 0.25); }
+.ge-viz-legend .sw-banned { background: rgba(217, 83, 79, 0.35); }
+.ge-viz-legend .sw-donor { background: rgba(230, 162, 27, 0.45); box-shadow: inset 0 0 0 2px #e6a21b; }
+.ge-viz-legend .sw-target { background: rgba(23, 162, 184, 0.35); box-shadow: inset 0 0 0 2px #17a2b8; }

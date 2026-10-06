@@ -1,0 +1,5 @@
+# Live crypto module copied in by tests/run.sh before running the harness.
+tests/crypto.js
+
+# OS cruft
+.DS_Store

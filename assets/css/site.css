@@ -1,0 +1,87 @@
+/* Page chrome for the standalone k-fold gift exchange site. Matches the
+   al-folio palette (light default, dark via html[data-theme="dark"]) so the
+   standalone GitHub Pages build uses the same theme choices as the author's
+   website. Widget-specific styling lives in giftexchange.css. */
+
+:root {
+  color-scheme: light;
+  --bg: #ffffff;
+  --fg: #151a22;
+  --muted: #828282;
+  --panel: #ffffff;
+  --border: #e6e6e6;
+  --accent: #2f6fd0;
+  --divider: rgba(0, 0, 0, 0.1);
+}
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #1c1c1d;
+  --fg: #e8e8e8;
+  --muted: #828282;
+  --panel: #212529;
+  --border: #424246;
+  --accent: #2698ba;
+  --divider: #424246;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+.wrap { max-width: 930px; margin: 0 auto; padding: 32px 20px 72px; }
+
+/* Theme-aware diagram swap, mirroring the site's .only-light/.only-dark */
+.only-light { display: block; }
+.only-dark { display: none; }
+html[data-theme="dark"] .only-light { display: none; }
+html[data-theme="dark"] .only-dark { display: block; }
+
+header.hero { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 6px; }
+header.hero h1 { font-size: 1.9rem; margin: 0; letter-spacing: -0.01em; }
+header.hero .sub { color: var(--muted); margin: 4px 0 0; font-size: 0.95rem; }
+button.theme-toggle {
+  background: var(--panel); color: var(--fg); border: 1px solid var(--border);
+  border-radius: 8px; padding: 6px 12px; cursor: pointer; font: inherit; font-size: 0.85rem;
+  flex: 0 0 auto;
+}
+button.theme-toggle:hover { border-color: var(--accent); }
+
+.intro { color: var(--fg); margin: 18px 0 8px; }
+.intro p { margin: 0.7em 0; }
+
+/* The page sets concrete body colors, so give the widget's `inherit` text a
+   value and let the .ge-* variables handle the rest. */
+.ge-app, details { color: var(--fg); }
+details > summary { color: var(--fg); }
+
+pre.ge-code {
+  background: rgba(127, 127, 127, 0.12);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85em;
+  line-height: 1.45;
+}
+code.inline {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.9em;
+  background: rgba(127, 127, 127, 0.12);
+  border-radius: 4px;
+  padding: 0 4px;
+}
+a { color: var(--accent); }
+
+.backlink { display: inline-block; margin: 8px 0 4px; font-weight: 600; }
+
+footer { margin-top: 40px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); padding-top: 16px; }
+footer a { color: var(--accent); }
+
+/* Mobile: keep the hero title and toggle from colliding. */
+@media (max-width: 560px) {
+  header.hero { flex-direction: column; align-items: flex-start; }
+}

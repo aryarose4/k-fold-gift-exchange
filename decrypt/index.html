@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gift Exchange: Decrypt</title>
+<meta name="description" content="Reveal your own secret gift-exchange recipients from a public message and your private key.">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="stylesheet" href="../assets/css/giftexchange.css">
+</head>
+<body>
+<div class="wrap">
+
+  <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+    <p class="backlink"><a href="../">&larr; Back to the Gift Exchange tool</a></p>
+    <button class="theme-toggle" id="theme-toggle" type="button">Light / dark</button>
+  </div>
+
+  <p>Got a secret-mode message and a key? Paste them below to see who you are buying for. Only your own row is revealed.</p>
+
+  <div class="ge-app" id="ge-reveal-app">
+    <div class="ge-panel">
+      <h3>Got a message and a key?</h3>
+      <p>Paste the public message and your private key to see who you are buying for.</p>
+      <label for="ge-reveal-message">Public message</label>
+      <textarea id="ge-reveal-message" class="ge-code" rows="4"></textarea>
+      <label for="ge-reveal-key">Your private key</label>
+      <input id="ge-reveal-key" class="ge-code" type="text" autocomplete="off" spellcheck="false" />
+      <button type="button" id="ge-reveal-go" class="ge-btn ge-btn-primary">Reveal My Recipients</button>
+      <p id="ge-reveal-error" class="ge-error" role="alert"></p>
+      <div id="ge-reveal-out"></div>
+    </div>
+  </div>
+
+  <footer>
+    Standalone packaging of the $k$-fold gift exchange tool from
+    <a href="https://aryayae.com/">aryayae.com</a>.
+  </footer>
+</div>
+
+<script type="module" src="../assets/js/giftexchange/reveal.js"></script>
+<script src="../assets/js/theme.js"></script>
+</body>
+</html>

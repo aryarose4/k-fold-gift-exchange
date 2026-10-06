@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gift Exchange: Key Generator</title>
+<meta name="description" content="Generate a public/private keypair for Secret Mode (Double Blind).">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="stylesheet" href="../assets/css/giftexchange.css">
+</head>
+<body>
+<div class="wrap">
+
+  <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+    <p class="backlink"><a href="../">&larr; Back to the Gift Exchange tool</a></p>
+    <button class="theme-toggle" id="theme-toggle" type="button">Light / dark</button>
+  </div>
+
+  <div class="ge-app" id="ge-keygen-app">
+    <div class="ge-panel">
+      <h3>Key Generator</h3>
+      <p>Enter your full name.</p>
+      <div class="ge-add-bar">
+        <input id="ge-keygen-name" type="text" class="ge-name-input" placeholder="Your Full Name" aria-label="Your full name" autocomplete="off" />
+        <button type="button" id="ge-keygen-make" class="ge-btn ge-btn-primary">Generate My Key</button>
+      </div>
+      <p id="ge-keygen-status" class="ge-status"></p>
+      <div id="ge-keygen-out" style="display: none;">
+        <div class="ge-block">
+          <p class="ge-hint"><strong>Send this key to the organizer</strong></p>
+          <div class="ge-code-line">
+            <code id="ge-keygen-share" class="ge-code"></code>
+            <button type="button" id="ge-keygen-copy-share" class="ge-btn ge-btn-small">Copy</button>
+          </div>
+        </div>
+        <div class="ge-block">
+          <p class="ge-hint"><strong>Keep this private key</strong></p>
+          <div class="ge-code-line">
+            <code id="ge-keygen-priv" class="ge-code"></code>
+            <button type="button" id="ge-keygen-copy-priv" class="ge-btn ge-btn-small">Copy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Standalone packaging of the $k$-fold gift exchange tool from
+    <a href="https://aryayae.com/">aryayae.com</a>.
+  </footer>
+</div>
+
+<script type="module" src="../assets/js/giftexchange/keygen.js"></script>
+<script src="../assets/js/theme.js"></script>
+</body>
+</html>
