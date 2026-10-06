@@ -10,15 +10,13 @@
 
 </div>
 
-Classic Secret Santa assigns each person one recipient (and one giver). This tool
+Classic Secret Santa assigns each person one recipient (and one giver).  This tool
 generalizes that to a **$k$-fold gift exchange**: among $n$ participants, each person
-gives gifts to $k$ distinct others **and** receives from exactly $k$ distinct others,
-for any $1 \le k \le n-1$. The assignment is produced by a direct, retry-free
-construction — a greedy pass with an augmenting-path repair step — so there is no
-trial-and-error looping.
+gives gifts to $k$ distinct others and receives from exactly $k$ distinct others,
+for any $1 \le k \le n-1$.  The algorithm generates the gift assignment in two stages: first with a greedy pass, and then with an augmenting-path repair step if the greedy pass gets stuck.
 
-It is a dependency-free ES-module web app. Open it, type the participants, pick $k$,
-and generate. Three output modes are supported:
+It is a dependency-free ES-module web app.  Open it, type the participants, pick $k$,
+and generate.  Three output modes are supported:
 
 | Mode | What the organizer sees and shares |
 |---|---|
@@ -33,30 +31,27 @@ and generate. Three output modes are supported:
 | **Live** | **<https://aryayae.com/k-fold-gift-exchange/>** (GitHub Pages) |
 | **Local** | `python3 -m http.server 8000` in this folder, then open <http://localhost:8000/> |
 
-> The widget is an ES-module app, so it must be served over **HTTP**, not opened
-> directly as a `file://` path.
+> The widget is an ES-module app, so it must be served over **HTTP** instead of directly as a `file://` path.
 
 The tool is split across three pages:
 
-- `index.html` — the generator (and the exposition below it);
-- `decrypt/` — participants paste the public message and their private key to see their own recipients;
-- `keygen/` — Double-Blind participants generate a keypair and copy their `Name:PublicKey` share line.
+- `index.html` - the generator (and the exposition below it);
+- `decrypt/` - participants paste the public message and their private key to see their own recipients;
+- `keygen/` - in double-blind mode, participants generate a keypair and copy their `Name:PublicKey` share line.
 
 ## The graph theory
 
 A gift exchange is a directed graph: an arrow $i \to j$ means person $i$ gives a gift to
-person $j$. The desired object is a **$k$-regular directed graph without self-loops**, or
-equivalently an $n \times n$ 0/1 adjacency matrix with every row sum and every column sum
-equal to $k$ and an all-zero diagonal. Both connected and disconnected graphs are allowed,
-matching what can happen when names are drawn from a hat.
+person $j$.  The desired object is a **$k$-regular directed graph without self-loops**, or
+equivalently an $n \times n$ adjacency matrix with every row sum and every column sum
+equal to $k$ and all diagonal entries equal to 0.
 
 ## The algorithm
 
 The generator makes one pass over the givers, filling each giver's row greedily with
-recipients who still have spare capacity. If a giver runs out of legal recipients, a
-`repair` step walks an augmenting path — a chain of donors each freeing a slot for the
-next — until the stuck giver can be placed. The `index.html` page includes a
-step-through visualization of both the greedy pass and the repair chain.
+recipients who still have spare capacity.  If a giver runs out of legal recipients, a
+`repair` step creates a chain of edge donations to free up a slot for the stuck giver's row.  The `index.html` page includes a
+step-by-step visualization of both the greedy pass and the repair chain.
 
 ## The cryptography
 
@@ -67,7 +62,7 @@ one-time pad of its row. The key `a<i><b><cc>` carries the giver index, the offs
 base 36, and a two-character checksum; decryption is $X = (c_i - b_i) \bmod d$.
 
 **Double Blind.** A hardcoded 128-bit safe prime $p = 2q+1$ and a generator $g$ define
-ElGamal over $(\mathbb Z/p)^\times$. Each participant picks a private exponent $x$ and
+ElGamal over $(\mathbb Z/p)^\times$.  Each participant picks a private exponent $x$ and
 publishes $y = g^x \bmod p$. Each 0/1 entry is encrypted as a pair $(g^r,\ \tilde m y^r)$
 with $\tilde m = (m+1)2^{64} + r'$ for a random 64-bit $r'$; only the holder of $x$ can
 recover $m$.
@@ -93,7 +88,7 @@ not authenticate public keys, and the primes are chosen for readable sizes.
 
 ## Tests
 
-The repository ships the Node harness used for the cryptography. It has no
+The repository ships the Node harness used for the cryptography.  It has no
 dependencies and runs on plain Node (v12+).
 
 ```bash
@@ -105,13 +100,17 @@ rejection, the row codec edge cases, and the token/message codecs.
 
 ## Updates
 
-The widget also lives on its author's personal website, which is the source of truth for
-the JS modules. A sync script in the parent project copies the live modules and CSS into
-this repository, so the two stay in lock-step.
+This repository is the source of truth for the widget: the
+`assets/js/giftexchange/` modules, `assets/css/giftexchange.css`, the
+`assets/img/gift_exchange/` diagrams (built from `tools/diagrams/`), the
+`tests/` harness, and the page markup in `index.html` / `decrypt/` / `keygen/`
+are all authored here.  The copy on the author's personal website is a
+downstream mirror: a sync script there pulls these in and re-runs its crypto
+gate, so the two stay in lock-step.
 
 ## Author
 
-**Arya Yae** — questions, corrections and pull requests welcome.
+**Arya Yae**.  Questions, corrections and pull requests welcome.
 
 ## License
 
