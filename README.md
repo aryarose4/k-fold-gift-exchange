@@ -110,8 +110,6 @@ recover $m$.
   </picture>
 </p>
 
-This is an educational demonstration, not professional-grade cryptography: ElGamal does
-not authenticate public keys, and the primes are chosen for readable sizes.
 
 ## Repository layout
 
