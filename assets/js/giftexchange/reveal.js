@@ -1,4 +1,4 @@
-// Gift Exchange: k Secret k Santa — standalone decrypt page.
+// k-Fold Gift Exchange Generator — standalone decrypt page.
 // Handles the reveal panel only; the generator lives in app.js on the
 // project page. ES module importing ./crypto.js. No frameworks, no deps.
 

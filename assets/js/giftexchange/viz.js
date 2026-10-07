@@ -1,4 +1,4 @@
-// Gift Exchange — step-through visualization of the greedy assignment +
+// k-Fold Gift Exchange Generator — step-through visualization of the greedy assignment +
 // augmenting-path repair from core.js, rendered as an n x n adjacency
 // matrix (rows = givers, columns = receivers). Dependency-free ES module;
 // reuses makeRng/shuffle from core.js so the walk matches the real solver.
@@ -379,7 +379,7 @@ if (root) {
     }
     if (st.phase === "done") {
       return (
-        "Done: every row and column sums to " + st.k + " with no self-loops — a valid " +
+        "Done: every row and column sums to " + st.k + " with no self-loops, a valid " +
         st.k + "-regular digraph. Press <strong>Reset</strong> to start over."
       );
     }
@@ -391,7 +391,7 @@ if (root) {
     }
     if (st.phase === "repair") {
       return (
-        "Dead end: <strong>" + nameOf(g) + "</strong> has no legal options, so the repair chain reroutes 1s — each <strong>Next step</strong> moves an amber donor's 1 to the blue target, and the last move gives <strong>" +
+        "Dead end: <strong>" + nameOf(g) + "</strong> has no legal options, so the repair chain reroutes 1s. Each <strong>Next step</strong> moves an amber donor's 1 to the blue target, and the last move gives <strong>" +
         nameOf(g) + "</strong> a new edge."
       );
     }

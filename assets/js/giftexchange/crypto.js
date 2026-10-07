@@ -1,4 +1,4 @@
-// Gift Exchange "secret mode" cryptography.
+// k-Fold Gift Exchange Generator "secret mode" cryptography.
 // Dependency-free, browser + Node v12 (BigInt) compatible.
 
 export const P = BigInt("334217594647014894373927380688320646643");

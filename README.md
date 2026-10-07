@@ -1,8 +1,8 @@
 <div align="center">
 
-# Gift Exchange: k Secret k Santa
+# k-Fold Gift Exchange Generator
 
-**A retry-free generator for $k$-fold gift exchanges: everyone gives $k$ gifts and receives $k$ gifts, with no self-loops and no doubled arrows.**
+**A generator for $k$-fold gift exchanges, and an elementary demonstration in graph theory, algorithms, and cryptography.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Live demo](https://img.shields.io/badge/demo-live-brightgreen.svg)](https://aryayae.com/k-fold-gift-exchange/)

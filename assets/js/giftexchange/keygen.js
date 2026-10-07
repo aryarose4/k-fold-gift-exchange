@@ -1,4 +1,4 @@
-// Gift Exchange: k Secret k Santa — standalone keypair generator page.
+// k-Fold Gift Exchange Generator — standalone keypair generator page.
 // Used only for Secret Mode (Double Blind). ES module importing ./crypto.js.
 // No frameworks, no deps.
 
@@ -15,7 +15,7 @@ async function copyText(text, okMsg) {
       setTimeout(() => (status.textContent = ""), 3000);
     }
   } catch (e) {
-    if (status) status.textContent = "Copy failed — select the key and copy it manually.";
+    if (status) status.textContent = "Copy failed. Select the key and copy it manually.";
   }
 }
 
@@ -30,7 +30,7 @@ function makeKeypair() {
   $("ge-keygen-share").textContent = makeShareString(name, pub);
   $("ge-keygen-priv").textContent = priv;
   $("ge-keygen-out").style.display = "";
-  status.textContent = "Key created. Copy and save it — it is not stored in this browser.";
+  status.textContent = "Key created. Copy and save it; it is not stored in this browser.";
 }
 
 // The share line is "Name:PublicKey", so the name may not contain `:` (the

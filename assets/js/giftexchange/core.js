@@ -1,4 +1,4 @@
-// Gift Exchange: k Secret k Santa — core assignment engine.
+// k-Fold Gift Exchange Generator — core assignment engine.
 // Dependency-free ES module, browser + Node compatible.
 //
 // Problem: assign each of n participants k distinct recipients (no

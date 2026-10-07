@@ -1,4 +1,4 @@
-// Gift Exchange: k Secret k Santa — display layer.
+// k-Fold Gift Exchange Generator — display layer.
 // ES module importing ./core.js and ./crypto.js. No frameworks, no deps.
 
 import { generateAssignment, validateAssignment } from "./core.js";
@@ -286,7 +286,7 @@ function syncState() {
       r.pubEl.classList.toggle("ge-invalid", !ok);
       if (!ok) badPub = true;
     });
-    if (badPub) errs.push("One or more public keys are invalid — re-paste the Name:PublicKey line.");
+    if (badPub) errs.push("One or more public keys are invalid. Re-paste the Name:PublicKey line.");
   }
 
   $("ge-generate").disabled = errs.length > 0;
@@ -522,7 +522,7 @@ async function copyText(text, statusEl, okMsg) {
       fb.value = text;
       fb.select();
     }
-    if (statusEl) statusEl.textContent = "Copy failed — select and copy manually.";
+    if (statusEl) statusEl.textContent = "Copy failed. Select and copy manually.";
   }
 }
 

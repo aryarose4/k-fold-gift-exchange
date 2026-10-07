@@ -3,8 +3,37 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gift Exchange: k Secret k Santa</title>
-<meta name="description" content="A k-fold gift exchange: assign everyone k gift recipients (and k gift givers) with a direct, retry-free algorithm. Public, one-time-pad, and double-blind ElGamal modes.">
+<title>k-Fold Gift Exchange Generator</title>
+<meta name="description" content="Generate a k-fold Secret Santa: each of n participants gives and receives exactly k gifts. Public, trusted-organizer, and double-blind ElGamal modes.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="k-Fold Gift Exchange Generator">
+<meta property="og:title" content="k-Fold Gift Exchange Generator">
+<meta property="og:description" content="Generate a k-fold Secret Santa: each of n participants gives and receives exactly k gifts. Public, trusted-organizer, and double-blind ElGamal modes.">
+<meta property="og:url" content="https://aryayae.com/k-fold-gift-exchange/">
+<meta property="og:image" content="https://aryayae.com/k-fold-gift-exchange/assets/img/og/og-kfold-gift-exchange-generator.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="k-Fold Gift Exchange Generator">
+<meta name="twitter:description" content="Generate a k-fold Secret Santa: each of n participants gives and receives exactly k gifts. Public, trusted-organizer, and double-blind ElGamal modes.">
+<meta name="twitter:image" content="https://aryayae.com/k-fold-gift-exchange/assets/img/og/og-kfold-gift-exchange-generator.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "k-Fold Gift Exchange Generator",
+  "url": "https://aryayae.com/k-fold-gift-exchange/",
+  "description": "Generate a k-fold Secret Santa: each of n participants gives and receives exactly k gifts. Public, trusted-organizer, and double-blind ElGamal modes.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (web browser)",
+  "browserRequirements": "Requires JavaScript",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": { "@type": "Person", "name": "Arya Yae", "url": "https://aryayae.com/" }
+}
+</script>
+<link rel="canonical" href="https://aryayae.com/k-fold-gift-exchange/">
 <link rel="stylesheet" href="assets/css/site.css">
 <link rel="stylesheet" href="assets/css/giftexchange.css">
 <script>
@@ -20,8 +49,8 @@
 
   <header class="hero">
     <div>
-      <h1>Gift Exchange: k Secret k Santa</h1>
-      <p class="sub">Assign everyone $k$ gift recipients and $k$ gift givers &mdash; retry-free.</p>
+      <h1>k-Fold Gift Exchange Generator</h1>
+      <p class="sub">Assigns $k$ gift recipients to each person in a fair way.</p>
     </div>
     <button class="theme-toggle" id="theme-toggle" type="button">Light / dark</button>
   </header>
@@ -133,8 +162,8 @@
     <table class="ge-diagrams">
       <tr>
         <td>
-          <img src="assets/img/gift_exchange/one_component_light.svg" class="only-light" alt="One connected component: a directed 6-cycle on six people — Alice gives to Frank, Frank to Eve, Eve to David, David to Carlos, Carlos to Bob, and Bob to Alice" />
-          <img src="assets/img/gift_exchange/one_component_dark.svg" class="only-dark" alt="One connected component: a directed 6-cycle on six people — Alice gives to Frank, Frank to Eve, Eve to David, David to Carlos, Carlos to Bob, and Bob to Alice" />
+          <img src="assets/img/gift_exchange/one_component_light.svg" class="only-light" alt="One connected component: a directed 6-cycle on six people. Alice gives to Frank, Frank to Eve, Eve to David, David to Carlos, Carlos to Bob, and Bob to Alice" />
+          <img src="assets/img/gift_exchange/one_component_dark.svg" class="only-dark" alt="One connected component: a directed 6-cycle on six people. Alice gives to Frank, Frank to Eve, Eve to David, David to Carlos, Carlos to Bob, and Bob to Alice" />
         </td>
         <td>
           <img src="assets/img/gift_exchange/two_components_light.svg" class="only-light" alt="Two disjoint components: a 4-cycle Alice gives to Bob, Bob to Carlos, Carlos to Eve, Eve to Alice; and a 2-cycle David gives to Frank and Frank to David" />
@@ -422,16 +451,10 @@ function repair(stuckGiver s):
       $c_1^x=(g^r)^x=(g^x)^r=y^r$, the product $c_2\,(c_1^x)^{-1}$ returns $\tilde m$
       modulo $p$.
     </p>
-
-    <p class="ge-disclaimer">
-      Disclaimer: This is primarily an educational demonstration, not professional grade cryptography.  The ElGamal encryption scheme does not authenticate who a public key belongs to, and the organizer's browser internally stores the gift assignments before they get encrypted.
-    </p>
   </details>
 
   <footer>
-    Standalone packaging of the $k$-fold gift exchange tool from
-    <a href="https://aryayae.com/">aryayae.com</a>. See the repository README for the
-    algorithm and test harness.
+    Disclaimer: This is primarily an educational demonstration, not professional grade cryptography.  The ElGamal encryption scheme does not authenticate who a public key belongs to, and the organizer's browser internally stores the gift assignments before they get encrypted.
   </footer>
 </div>
 
