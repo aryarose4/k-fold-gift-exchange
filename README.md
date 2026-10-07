@@ -126,6 +126,7 @@ recover $m$.
 | `assets/js/giftexchange/viz.js` | Step-through visualization of the greedy + repair passes. |
 | `assets/css/giftexchange.css` | Widget styling (light/dark aware). |
 | `assets/css/site.css`, `assets/js/theme.js` | Page chrome and the shared light/dark theme. |
+| `sitemap.xml` | Search-engine sitemap (generator page only). |
 
 ## Tests
 
@@ -148,6 +149,20 @@ This repository is the source of truth for the widget: the
 are all authored here.  The copy on the author's personal website is a
 downstream mirror: a sync script there pulls these in and re-runs its crypto
 gate, so the two stay in lock-step.
+
+## Search-engine indexing
+
+- Every page carries an inline-SVG snowflake-emoji favicon (`❄️`), matching the
+  author's personal site.
+- `sitemap.xml` lists only the generator page. Submit it directly in Google
+  Search Console / Bing Webmaster Tools: a `robots.txt` inside this subpath would
+  be ignored, since crawlers only read `robots.txt` at a domain root.
+- `decrypt/` and `keygen/` carry
+  `<meta name="robots" content="noindex, follow">`. They are thin, task-only
+  pages, deliberately kept out of the index and the sitemap; personalized
+  `#ge=...&k=...` links still open and work normally.
+- To verify the site, paste your Google/Bing token into the commented
+  placeholder near the top of `index.html`'s `<head>`.
 
 ## Author
 
