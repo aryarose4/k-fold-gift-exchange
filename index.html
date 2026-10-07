@@ -57,7 +57,7 @@
         <p>Step 1: Have each user generate keys using the
           <a id="ge-keygen-link" href="keygen/">Key Generator</a>,
           and collect their public keys.</p>
-        <p>Step 2: Enter the participants' public keys one at a time or as a semicolon-separated list.  If a participant did not give you a public key, you can just enter their name.</p>
+        <p>Step 2: Enter the participants' public keys one at a time or as a semicolon-separated list. If a participant did not give you a public key, you can enter their name and generate a key for them.</p>
         <p>Step 3: Select the number $k$ and press <strong>Generate</strong>.</p>
         <p>Step 4: Share the link with everyone.  This contains the encrypted gift assignments.</p>
       </div>
@@ -67,7 +67,7 @@
                placeholder="Name, or semicolon-separated names" aria-label="Participant name(s)" />
         <button type="button" id="ge-add" class="ge-btn">Add Participant</button>
       </div>
-      <p class="ge-hint">
+      <p class="ge-hint" id="ge-add-hint">
         Type one name and press <strong>Add Participant</strong>, or add a whole group at once by
         separating names with semicolons (e.g. <code class="inline">Alice; Bob; Carlos</code>).
       </p>

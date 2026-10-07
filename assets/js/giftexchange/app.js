@@ -261,8 +261,9 @@ function syncState() {
   // Public keys matter only in double-blind mode.
   const showPubs = mode === "secure";
   $("ge-add-input").placeholder = showPubs
-    ? "Enter name:PublicKey"
+    ? "Enter participant public keys"
     : "Name, or semicolon-separated names";
+  $("ge-add-hint").style.display = showPubs ? "none" : "";
   document.querySelectorAll("#ge-name-list .ge-name-row").forEach((row) => {
     row.classList.toggle("ge-secure", showPubs);
     updatePubDisplay(row);
@@ -604,16 +605,42 @@ export function activate() {
   );
 
   $("ge-mode").addEventListener("change", (e) => {
-    mode = e.target.value;
-    // Switching to Double Blind with an existing result must fill in keys the
-    // same way Generate does, or the result would render blank.
-    if (mode === "secure" && result) {
-      const rows = readRows();
-      organizerKeys = pruneOrganizerKeys(organizerKeys, rows.map((r) => r.name));
-      ensureSecureKeys(rows);
+    const next = e.target.value;
+    if (next === mode) return;
+    // Changing the mode must discard the generated assignments, or the
+    // organizer could generate in one mode and peek in another. Entering
+    // Double Blind also resets the roster, because every participant has to
+    // supply a public key (re-add them as Name:PublicKey share lines).
+    const resetRoster = next === "secure" && mode !== "secure";
+    const hasRoster = !resetRoster || readRows().length > 0;
+    if (result || (resetRoster && hasRoster)) {
+      const warn =
+        "The roster will be reset for public key entry.";
+      const keep = "The roster will be preserved.";
+      const msg =
+        (result ? "Changing the mode resets the generated assignments. " : "") +
+        (resetRoster ? warn : keep);
+      if (!window.confirm(msg)) {
+        e.target.value = mode;
+        return;
+      }
     }
+    mode = next;
+    // Drop all generated state so nothing stale can be revealed.
+    result = null;
+    secretCache = null;
+    lastMessage = "";
+    lastKeys = [];
+    renderSeq++;
+    if (resetRoster) {
+      $("ge-name-list").innerHTML = "";
+      organizerKeys = new Map();
+    }
+    $("ge-results-wrap").style.display = "none";
+    $("ge-public-out").innerHTML = "";
+    $("ge-secret-out").style.display = "none";
+    $("ge-message").value = "";
     syncState();
-    if (result) renderResults();
   });
 
   syncState();
