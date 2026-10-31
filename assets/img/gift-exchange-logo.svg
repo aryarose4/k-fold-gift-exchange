@@ -1,49 +1,42 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="gift-title gift-desc">
   <title id="gift-title">k-Fold Gift Exchange</title>
-  <desc id="gift-desc">Seven participants on a circle exchange gifts along two interwoven directed stars. Each participant gives to the participants two and three positions clockwise, and receives from two others.</desc>
+  <desc id="gift-desc">Seven equally spaced participants exchange gifts along a circular cycle and an interwoven star. White arrows lead one and four positions clockwise modulo seven; each participant gives to two others and receives from two others.</desc>
   <defs>
     <filter id="gift-soft-glow" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB">
       <feGaussianBlur stdDeviation="3.2"/>
       <feComponentTransfer><feFuncA type="linear" slope=".32"/></feComponentTransfer>
       <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
-    <marker id="gift-arrow-two" class="gift-two" markerUnits="userSpaceOnUse" markerWidth="18" markerHeight="18" viewBox="-18 -9 18 18" refX="0" refY="0" orient="auto" overflow="visible">
-      <path d="M-17 -8 0 0-17 8-13 0Z" fill="currentColor"/>
-    </marker>
-    <marker id="gift-arrow-three" class="gift-three" markerUnits="userSpaceOnUse" markerWidth="18" markerHeight="18" viewBox="-18 -9 18 18" refX="0" refY="0" orient="auto" overflow="visible">
-      <path d="M-17 -8 0 0-17 8-13 0Z" fill="currentColor"/>
+    <marker id="gift-arrow" markerUnits="userSpaceOnUse" markerWidth="18" markerHeight="22" viewBox="-18 -11 18 22" refX="0" refY="0" orient="auto" overflow="visible">
+      <path d="M-17 -10 0 0-17 10-13 0Z" fill="#fff"/>
     </marker>
   </defs>
   <style>
-    .gift-two { color: #609fdf; }
-    .gift-three { color: #54bd97; }
     .gift-node { fill: #fff; stroke: #324650; }
     @media (prefers-color-scheme: dark) {
-      .gift-two { color: #71b7ff; }
-      .gift-three { color: #74dfb3; }
       .gift-node { fill: #202b35; stroke: #eaf5ff; }
     }
   </style>
   <!-- Exact rotational repeats: node i lies at angle 2*pi*i/7 from twelve oclock.
        Edges are trimmed 28 units from both node centers; node radius is 15. -->
-  <g fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" filter="url(#gift-soft-glow)">
-    <g class="gift-three" marker-end="url(#gift-arrow-three)">
-      <path data-source="0" data-target="3" transform="rotate(0.000000000000 256 256)" d="M266.582677 97.923097 Q322.680133 240.780695 334.121660 393.830717"/>
-      <path data-source="1" data-target="4" transform="rotate(51.428571428571 256 256)" d="M266.582677 97.923097 Q322.680133 240.780695 334.121660 393.830717"/>
-      <path data-source="2" data-target="5" transform="rotate(102.857142857143 256 256)" d="M266.582677 97.923097 Q322.680133 240.780695 334.121660 393.830717"/>
-      <path data-source="3" data-target="6" transform="rotate(154.285714285714 256 256)" d="M266.582677 97.923097 Q322.680133 240.780695 334.121660 393.830717"/>
-      <path data-source="4" data-target="0" transform="rotate(205.714285714286 256 256)" d="M266.582677 97.923097 Q322.680133 240.780695 334.121660 393.830717"/>
-      <path data-source="5" data-target="1" transform="rotate(257.142857142857 256 256)" d="M266.582677 97.923097 Q322.680133 240.780695 334.121660 393.830717"/>
-      <path data-source="6" data-target="2" transform="rotate(308.571428571429 256 256)" d="M266.582677 97.923097 Q322.680133 240.780695 334.121660 393.830717"/>
+  <g fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" marker-end="url(#gift-arrow)" filter="url(#gift-soft-glow)">
+    <g data-jump="4">
+      <path data-source="0" data-target="4" transform="rotate(0.000000000000 256 256)" d="M245.417323 97.923097 Q189.319867 240.780695 177.878340 393.830717"/>
+      <path data-source="1" data-target="5" transform="rotate(51.428571428571 256 256)" d="M245.417323 97.923097 Q189.319867 240.780695 177.878340 393.830717"/>
+      <path data-source="2" data-target="6" transform="rotate(102.857142857143 256 256)" d="M245.417323 97.923097 Q189.319867 240.780695 177.878340 393.830717"/>
+      <path data-source="3" data-target="0" transform="rotate(154.285714285714 256 256)" d="M245.417323 97.923097 Q189.319867 240.780695 177.878340 393.830717"/>
+      <path data-source="4" data-target="1" transform="rotate(205.714285714286 256 256)" d="M245.417323 97.923097 Q189.319867 240.780695 177.878340 393.830717"/>
+      <path data-source="5" data-target="2" transform="rotate(257.142857142857 256 256)" d="M245.417323 97.923097 Q189.319867 240.780695 177.878340 393.830717"/>
+      <path data-source="6" data-target="3" transform="rotate(308.571428571429 256 256)" d="M245.417323 97.923097 Q189.319867 240.780695 177.878340 393.830717"/>
     </g>
-    <g class="gift-two" marker-end="url(#gift-arrow-two)">
-      <path data-source="0" data-target="2" transform="rotate(0.000000000000 256 256)" d="M275.805859 91.792119 Q357.307741 175.209773 420.498065 273.230407"/>
-      <path data-source="1" data-target="3" transform="rotate(51.428571428571 256 256)" d="M275.805859 91.792119 Q357.307741 175.209773 420.498065 273.230407"/>
-      <path data-source="2" data-target="4" transform="rotate(102.857142857143 256 256)" d="M275.805859 91.792119 Q357.307741 175.209773 420.498065 273.230407"/>
-      <path data-source="3" data-target="5" transform="rotate(154.285714285714 256 256)" d="M275.805859 91.792119 Q357.307741 175.209773 420.498065 273.230407"/>
-      <path data-source="4" data-target="6" transform="rotate(205.714285714286 256 256)" d="M275.805859 91.792119 Q357.307741 175.209773 420.498065 273.230407"/>
-      <path data-source="5" data-target="0" transform="rotate(257.142857142857 256 256)" d="M275.805859 91.792119 Q357.307741 175.209773 420.498065 273.230407"/>
-      <path data-source="6" data-target="1" transform="rotate(308.571428571429 256 256)" d="M275.805859 91.792119 Q357.307741 175.209773 420.498065 273.230407"/>
+    <g data-jump="1">
+      <path data-source="0" data-target="1" transform="rotate(0.000000000000 256 256)" d="M283.918833 74.130435 A184 184 0 0 1 380.784244 120.778358"/>
+      <path data-source="1" data-target="2" transform="rotate(51.428571428571 256 256)" d="M283.918833 74.130435 A184 184 0 0 1 380.784244 120.778358"/>
+      <path data-source="2" data-target="3" transform="rotate(102.857142857143 256 256)" d="M283.918833 74.130435 A184 184 0 0 1 380.784244 120.778358"/>
+      <path data-source="3" data-target="4" transform="rotate(154.285714285714 256 256)" d="M283.918833 74.130435 A184 184 0 0 1 380.784244 120.778358"/>
+      <path data-source="4" data-target="5" transform="rotate(205.714285714286 256 256)" d="M283.918833 74.130435 A184 184 0 0 1 380.784244 120.778358"/>
+      <path data-source="5" data-target="6" transform="rotate(257.142857142857 256 256)" d="M283.918833 74.130435 A184 184 0 0 1 380.784244 120.778358"/>
+      <path data-source="6" data-target="0" transform="rotate(308.571428571429 256 256)" d="M283.918833 74.130435 A184 184 0 0 1 380.784244 120.778358"/>
     </g>
   </g>
   <g class="gift-node" stroke-width="4">
