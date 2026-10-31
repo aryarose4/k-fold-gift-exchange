@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="assets/img/gift-exchange-logo-tile.svg?v=37b337d18add" width="128" height="128" alt="k-Fold Gift Exchange logo">
+
 # k-Fold Gift Exchange Generator
 
 **A generator for $k$-fold gift exchanges, and an elementary demonstration in graph theory, algorithms, and cryptography.**
