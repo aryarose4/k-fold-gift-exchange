@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/img/gift-exchange-logo-tile.svg?v=84b376c6173d" width="128" height="128" alt="k-Fold Gift Exchange logo">
+<img src="assets/img/gift-exchange-logo-tile.svg?v=f4aae38c7980" width="128" height="128" alt="k-Fold Gift Exchange logo">
 
 # k-Fold Gift Exchange Generator
 

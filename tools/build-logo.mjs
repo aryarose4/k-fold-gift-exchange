@@ -17,13 +17,10 @@ const dark = annotate(master);
 const adaptive = master.replace(/(fill|stroke)="#fff"/g, '$1="currentColor"').replace('  <defs>', notice +
   '  <style>\n' +
   '    :root { color: #212529; }\n' +
-  '    .gift-backplate { fill: #fff; }\n' +
   '    @media (prefers-color-scheme: dark) {\n' +
   '      :root { color: #fff; }\n' +
-  '      .gift-backplate { fill: #1c1c1d; }\n' +
   '    }\n' +
   '  </style>\n' +
-  '  <rect class="gift-backplate" width="512" height="512" rx="32"/>\n' +
   '  <defs>');
 for (const [name, svg] of [['light', light], ['dark', dark], ['tile', adaptive]]) {
   const filename = 'gift-exchange-logo-' + name + '.svg';
