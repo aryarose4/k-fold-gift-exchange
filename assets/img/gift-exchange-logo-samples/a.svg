@@ -12,13 +12,13 @@
     </marker>
   </defs>
   <g fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" marker-end="url(#gift-arrow)" filter="url(#gift-soft-glow)">
-    <path data-source="0" data-target="1" d="M283.918833 74.130435 A184 184 0 0 1 380.784244 120.778358"/>
+    <path data-source="0" data-target="1" d="M281.227128 84.148745 L374.629865 129.129131"/>
     <path data-source="0" data-target="3" d="M259.167482 99.820263 Q276.418746 251.339555 326.617651 395.338761"/>
     <path data-source="1" data-target="4" d="M380.081128 161.099964 Q272.374563 269.058278 191.089955 398.087400"/>
     <path data-source="1" data-target="6" d="M372.123731 137.422205 Q256.000000 121.277876 139.876269 137.422205"/>
     <path data-source="2" data-target="4" d="M408.727018 305.503024 Q297.098389 341.341684 199.479284 406.271421"/>
     <path data-source="2" data-target="5" d="M407.559153 293.841328 Q256.000000 276.943852 104.440847 293.841328"/>
-    <path data-source="3" data-target="2" d="M360.064247 407.745289 A184 184 0 0 0 427.097191 323.688635"/>
+    <path data-source="3" data-target="2" d="M353.292322 399.886990 L417.929022 318.835134"/>
     <path data-source="3" data-target="5" d="M312.520716 406.271421 Q214.901611 341.341684 103.272982 305.503024"/>
     <path data-source="4" data-target="0" d="M185.382349 395.338761 Q235.581254 251.339555 252.832518 99.820263"/>
     <path data-source="4" data-target="6" d="M173.753162 393.882373 Q163.652758 277.077655 122.073240 167.457840"/>
