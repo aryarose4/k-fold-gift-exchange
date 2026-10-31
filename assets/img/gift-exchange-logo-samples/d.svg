@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="gift-title gift-desc">
-  <title id="gift-title">k-Fold Gift Exchange ? sample D</title>
+  <title id="gift-title">k-Fold Gift Exchange: sample D</title>
   <desc id="gift-desc">Random topology sample D: seven equally spaced participants and fourteen directed arrows. Every participant has exactly two incoming and two outgoing arrows. Strongly connected, without self loops, duplicate arcs, or reciprocal pairs.</desc>
   <defs>
     <filter id="gift-soft-glow" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB">
@@ -12,20 +12,20 @@
     </marker>
   </defs>
   <g fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" marker-end="url(#gift-arrow)" filter="url(#gift-soft-glow)">
-    <path data-source="0" data-target="1" d="M283.846613 74.926797 C336.778124 80.490123 342.854811 83.416501 380.206651 121.331346"/>
-    <path data-source="0" data-target="2" d="M269.145204 96.722533 C302.947156 160.294759 359.752436 231.526326 414.209132 278.626945"/>
-    <path data-source="1" data-target="4" d="M388.724039 166.969458 C360.096443 233.033523 256.772979 362.597050 198.735516 405.207530"/>
-    <path data-source="1" data-target="6" d="M372.332238 146.414789 C301.554297 159.623994 210.445703 159.623994 139.667762 146.414789"/>
-    <path data-source="2" data-target="1" d="M438.729774 269.144138 C445.084302 216.301774 443.583484 209.726262 414.930810 164.874063"/>
-    <path data-source="2" data-target="3" d="M426.336865 323.441019 C409.134655 373.807469 404.929456 379.080621 359.653650 407.059126"/>
-    <path data-source="3" data-target="4" d="M309.475787 431.223511 C259.372307 449.177250 252.627693 449.177250 202.524213 431.223511"/>
-    <path data-source="3" data-target="5" d="M313.264484 405.207530 C255.227021 362.597050 173.141015 323.066513 103.641034 304.258197"/>
-    <path data-source="4" data-target="0" d="M175.048678 393.800549 C172.177126 321.857835 209.052844 160.294759 242.854796 96.722533"/>
-    <path data-source="4" data-target="5" d="M152.346350 407.059126 C107.070544 379.080621 102.865345 373.807469 85.663135 323.441019"/>
-    <path data-source="5" data-target="2" d="M97.790868 278.626945 C152.247564 231.526326 338.858985 323.066513 408.358966 304.258197"/>
-    <path data-source="5" data-target="6" d="M73.270226 269.144138 C66.915698 216.301774 68.416516 209.726262 97.069190 164.874063"/>
-    <path data-source="6" data-target="0" d="M131.793349 121.331346 C169.145189 83.416501 175.221876 80.490123 228.153387 74.926797"/>
-    <path data-source="6" data-target="3" d="M123.275961 166.969458 C151.903557 233.033523 339.822874 321.857835 336.951322 393.800549"/>
+    <path data-source="0" data-target="1" d="M283.918833 74.130435 A184 184 0 0 1 380.784244 120.778358"/>
+    <path data-source="0" data-target="2" d="M270.276921 96.086709 Q330.056738 196.941722 415.080845 277.665086"/>
+    <path data-source="1" data-target="4" d="M380.081128 161.099964 Q272.374563 269.058278 191.089955 398.087400"/>
+    <path data-source="1" data-target="6" d="M372.123731 137.422205 Q256.000000 121.277876 139.876269 137.422205"/>
+    <path data-source="2" data-target="1" d="M439.522240 269.250936 A184 184 0 0 0 415.598460 164.434004"/>
+    <path data-source="2" data-target="3" d="M427.097191 323.688635 A184 184 0 0 1 360.064247 407.745289"/>
+    <path data-source="3" data-target="4" d="M309.756247 431.972344 A184 184 0 0 1 202.243753 431.972344"/>
+    <path data-source="3" data-target="5" d="M312.520716 406.271421 Q214.901611 341.341684 103.272982 305.503024"/>
+    <path data-source="4" data-target="0" d="M185.382349 395.338761 Q235.581254 251.339555 252.832518 99.820263"/>
+    <path data-source="4" data-target="5" d="M151.935753 407.745289 A184 184 0 0 1 84.902809 323.688635"/>
+    <path data-source="5" data-target="2" d="M104.440847 300.046376 Q256.000000 316.943852 407.559153 300.046376"/>
+    <path data-source="5" data-target="6" d="M72.477760 269.250936 A184 184 0 0 1 96.401540 164.434004"/>
+    <path data-source="6" data-target="0" d="M131.215756 120.778358 A184 184 0 0 1 228.081167 74.130435"/>
+    <path data-source="6" data-target="3" d="M127.067570 164.968749 Q208.352178 293.997870 316.058743 401.956184"/>
   </g>
   <g fill="#fff" stroke="none">
     <circle data-node="0" cx="256.000000" cy="72.000000" r="10"/>

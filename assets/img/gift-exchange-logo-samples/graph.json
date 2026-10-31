@@ -62,9 +62,7 @@
         ]
       ],
       "boundary": 2,
-      "seed": 3424224398,
-      "minimumAttachmentSeparation": 0.97738438,
-      "minimumAttachmentDistance": 26.290408
+      "seed": 3424224398
     },
     {
       "sample": "B",
@@ -127,9 +125,7 @@
         ]
       ],
       "boundary": 4,
-      "seed": 3730467310,
-      "minimumAttachmentSeparation": 0.97738438,
-      "minimumAttachmentDistance": 26.290408
+      "seed": 3730467310
     },
     {
       "sample": "C",
@@ -192,9 +188,7 @@
         ]
       ],
       "boundary": 5,
-      "seed": 870697630,
-      "minimumAttachmentSeparation": 0.97738438,
-      "minimumAttachmentDistance": 26.290408
+      "seed": 870697630
     },
     {
       "sample": "D",
@@ -257,10 +251,8 @@
         ]
       ],
       "boundary": 7,
-      "seed": 4254010582,
-      "minimumAttachmentSeparation": 0.97738438,
-      "minimumAttachmentDistance": 26.290408
+      "seed": 4254010582
     }
   ],
-  "routing": "At each node, incident edges are sorted by chord angle and assigned four evenly spaced inward ports, 56 degrees apart. Cubic endpoints have exact radius 28; handles run away from node centers. Minimum port distance 26.290407."
+  "routing": "Neighbor arcs follow the radius-184 minor circle, endpoints trimmed to exact Euclidean distance28 from node centers. Diagonals are quadratic chords with control point20 units to the left of the midpoint; ends are trimmed28 along endpoint-to-control directions. No fixed attachment ports or angle splay."
 }
