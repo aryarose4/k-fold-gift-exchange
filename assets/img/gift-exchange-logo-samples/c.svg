@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="gift-title gift-desc">
+  <title id="gift-title">k-Fold Gift Exchange ? sample C</title>
+  <desc id="gift-desc">Random topology sample C: seven equally spaced participants and fourteen directed arrows. Every participant has exactly two incoming and two outgoing arrows. Strongly connected, without self loops, duplicate arcs, or reciprocal pairs.</desc>
+  <defs>
+    <filter id="gift-soft-glow" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="3.2"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".32"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="gift-arrow" markerUnits="userSpaceOnUse" markerWidth="18" markerHeight="22" viewBox="-18 -11 18 22" refX="0" refY="0" orient="auto" overflow="visible">
+      <path d="M-17 -10 0 0-17 10-13 0Z" fill="#fff"/>
+    </marker>
+  </defs>
+  <g fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" marker-end="url(#gift-arrow)" filter="url(#gift-soft-glow)">
+    <path data-source="0" data-target="3" d="M269.145204 96.722533 C302.947156 160.294759 339.822874 321.857835 336.951322 393.800549"/>
+    <path data-source="0" data-target="4" d="M242.854796 96.722533 C209.052844 160.294759 172.177126 321.857835 175.048678 393.800549"/>
+    <path data-source="1" data-target="2" d="M414.930810 164.874063 C443.583484 209.726262 445.084302 216.301774 438.729774 269.144138"/>
+    <path data-source="1" data-target="4" d="M372.332238 146.414789 C301.554297 159.623994 256.772979 362.597050 198.735516 405.207530"/>
+    <path data-source="2" data-target="0" d="M414.209132 278.626945 C359.752436 231.526326 355.452190 82.452846 283.846613 74.926797"/>
+    <path data-source="2" data-target="5" d="M426.336865 323.441019 C403.065770 391.576590 173.141015 323.066513 103.641034 304.258197"/>
+    <path data-source="3" data-target="1" d="M359.653650 407.059126 C420.902615 369.209895 360.096443 233.033523 388.724039 166.969458"/>
+    <path data-source="3" data-target="6" d="M313.264484 405.207530 C255.227021 362.597050 151.903557 233.033523 123.275961 166.969458"/>
+    <path data-source="4" data-target="3" d="M202.524213 431.223511 C252.627693 449.177250 259.372307 449.177250 309.475787 431.223511"/>
+    <path data-source="4" data-target="5" d="M152.346350 407.059126 C107.070544 379.080621 102.865345 373.807469 85.663135 323.441019"/>
+    <path data-source="5" data-target="1" d="M97.790868 278.626945 C152.247564 231.526326 329.677202 70.040267 380.206651 121.331346"/>
+    <path data-source="5" data-target="6" d="M73.270226 269.144138 C66.915698 216.301774 68.416516 209.726262 97.069190 164.874063"/>
+    <path data-source="6" data-target="0" d="M131.793349 121.331346 C169.145189 83.416501 175.221876 80.490123 228.153387 74.926797"/>
+    <path data-source="6" data-target="2" d="M139.667762 146.414789 C210.445703 159.623994 338.858985 323.066513 408.358966 304.258197"/>
+  </g>
+  <g fill="#fff" stroke="none">
+    <circle data-node="0" cx="256.000000" cy="72.000000" r="10"/>
+    <circle data-node="1" cx="399.856993" cy="141.277876" r="10"/>
+    <circle data-node="2" cx="435.386736" cy="296.943852" r="10"/>
+    <circle data-node="3" cx="335.834608" cy="421.778272" r="10"/>
+    <circle data-node="4" cx="176.165392" cy="421.778272" r="10"/>
+    <circle data-node="5" cx="76.613264" cy="296.943852" r="10"/>
+    <circle data-node="6" cx="112.143007" cy="141.277876" r="10"/>
+  </g>
+</svg>
