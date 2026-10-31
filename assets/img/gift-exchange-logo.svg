@@ -12,13 +12,10 @@
     </marker>
   </defs>
   <style>
-    .gift-node { fill: #fff; stroke: #324650; }
-    @media (prefers-color-scheme: dark) {
-      .gift-node { fill: #202b35; stroke: #eaf5ff; }
-    }
+    .gift-node { fill: #fff; stroke: none; }
   </style>
   <!-- Exact rotational repeats: node i lies at angle 2*pi*i/7 from twelve oclock.
-       Edges are trimmed 28 units from both node centers; node radius is 15. -->
+       Edges are trimmed 28 units from both node centers; node radius is 10. -->
   <g fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" marker-end="url(#gift-arrow)" filter="url(#gift-soft-glow)">
     <g data-jump="4">
       <path data-source="0" data-target="4" transform="rotate(0.000000000000 256 256)" d="M245.417323 97.923097 Q189.319867 240.780695 177.878340 393.830717"/>
@@ -39,13 +36,13 @@
       <path data-source="6" data-target="0" transform="rotate(308.571428571429 256 256)" d="M283.918833 74.130435 A184 184 0 0 1 380.784244 120.778358"/>
     </g>
   </g>
-  <g class="gift-node" stroke-width="4">
-    <circle data-node="0" cx="256.000000" cy="72.000000" r="15"/>
-    <circle data-node="1" cx="399.856993" cy="141.277876" r="15"/>
-    <circle data-node="2" cx="435.386736" cy="296.943852" r="15"/>
-    <circle data-node="3" cx="335.834608" cy="421.778272" r="15"/>
-    <circle data-node="4" cx="176.165392" cy="421.778272" r="15"/>
-    <circle data-node="5" cx="76.613264" cy="296.943852" r="15"/>
-    <circle data-node="6" cx="112.143007" cy="141.277876" r="15"/>
+  <g class="gift-node">
+    <circle data-node="0" cx="256.000000" cy="72.000000" r="10"/>
+    <circle data-node="1" cx="399.856993" cy="141.277876" r="10"/>
+    <circle data-node="2" cx="435.386736" cy="296.943852" r="10"/>
+    <circle data-node="3" cx="335.834608" cy="421.778272" r="10"/>
+    <circle data-node="4" cx="176.165392" cy="421.778272" r="10"/>
+    <circle data-node="5" cx="76.613264" cy="296.943852" r="10"/>
+    <circle data-node="6" cx="112.143007" cy="141.277876" r="10"/>
   </g>
 </svg>
